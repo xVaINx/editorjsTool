@@ -22,38 +22,6 @@ import Marker from '@editorjs/marker';
 
   const defaultConfig = {
     tools: {
-      header: {
-        class: Header,
-        inlineToolbar: ['marker', 'inlineCode'],
-        config: {
-          placeholder: options.headerPlaceholder || '',
-        },
-      },
-
-      image: {
-        class: Image,
-        inlineToolbar: true,
-        config: {
-          types: 'image/*, video/mp4',
-          endpoints: {
-            byFile: '/api/transport/image',
-            byUrl: '/api/transport/fetch',
-          },
-        },
-      },
-
-      linkTool: {
-        class: LinkTool,
-        config: {
-          endpoint: '/api/fetchUrl',
-        },
-      },
-
-      code: {
-        class: CodeTool,
-        shortcut: 'CMD+SHIFT+D',
-      },
-
       list: {
         class: List,
         inlineToolbar: true,
@@ -110,5 +78,8 @@ import Marker from '@editorjs/marker';
     onReady: () => {console.log('Editor.js is ready to work!')},
   };
 
-
-const editor = new EditorJS(defaultConfig);
+document.addEventListener('DOMContentLoaded', function () {
+    const editor = new EditorJS({
+        holder: 'editorjs'
+  });
+});
