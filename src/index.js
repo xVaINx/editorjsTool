@@ -1,7 +1,5 @@
 import EditorJS from '@editorjs/editorjs';
-/**
- * Block Tools for the Editor
- */
+
 import List from '@editorjs/list';
 import Delimiter from '@editorjs/delimiter';
 import Table from '@editorjs/table';
@@ -9,15 +7,15 @@ import Warning from '@editorjs/warning';
 import Checklist from '@editorjs/checklist';
 import RawTool from '@editorjs/raw';
 import Embed from '@editorjs/embed'; 
+import Header from '@editorjs/header';
 
-/** 
- * Inline Tools for the Editor
- */
 import InlineCode from '@editorjs/inline-code';
 import Marker from '@editorjs/marker';
 import MentionTool from './MentionTool.js'
 
 document.addEventListener('DOMContentLoaded', function () {
+
+
     const editor = new EditorJS({
         holder: 'editorjs',
         tools: {
@@ -25,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
             class: List,
             inlineToolbar: true,
           },
+          
+          header: Header,
     
           delimiter: Delimiter,
     
@@ -42,10 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             class: Checklist,
             inlineToolbar: true,
           },
-    
-          /**
-           * Inline Tools
-           */
+            
           inlineCode: {
             class: InlineCode,
             shortcut: 'CMD+SHIFT+C',
@@ -62,22 +59,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
           mention:{
             class: MentionTool,
-          }
-        },
-        data: {
-          blocks: [
+            config: {
+              users: [
             {
-              type: 'header',
-              data: {
-                text: '',
-                level: 2,
-              },
+                "profile_photo": "http://placehold.it/300x200",
+                "name": "John Doe",
             },
-          ],
-        },
-        /**
-        *  onReady callback
-        */
+            {
+                "href": "http://placehold.it/300x200",
+                "name": "Jane Doe",
+            },
+            {
+                "href": "http://placehold.it/300x200",
+                "name": "Jaan Doe",
+            },
+            {
+                "href": "http://placehold.it/300x200",
+                "name": "Jang Doe",
+            },
+            {
+                "href": "http://placehold.it/300x200",
+                "name": "Hand Doe",
+            },
+        ]
+            }
+          }
+        },           
         onReady: () => {console.log('Editor.js is ready to work!')},
   });
 });
