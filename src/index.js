@@ -62,29 +62,41 @@ document.addEventListener('DOMContentLoaded', function () {
             config: {
               users: [
             {
+                "id":"AHXBHIBC IQBCBQ1",
                 "profile_photo": "http://placehold.it/300x200",
                 "name": "John Doe",
             },
             {
+              "id":"AHXBHIBC IQBCBQ2",
                 "href": "http://placehold.it/300x200",
                 "name": "Jane Doe",
             },
             {
+              "id":"AHXBHIBC IQBCBQ3",
                 "href": "http://placehold.it/300x200",
                 "name": "Jaan Doe",
             },
             {
+              "id":"AHXBHIBC IQBCBQ4",
                 "href": "http://placehold.it/300x200",
                 "name": "Jang Doe",
             },
             {
+              "id":"AHXBHIBC IQBCBQ5",
                 "href": "http://placehold.it/300x200",
                 "name": "Hand Doe",
             },
         ]
             }
           }
-        },           
+        }, 
+        onChange: () => {
+          editor.save().then((outputData) => {
+            console.log(outputData);
+          }).catch((error) => {
+            console.error(error);
+          });
+        },            
         onReady: () => {console.log('Editor.js is ready to work!')},
   });
 });
