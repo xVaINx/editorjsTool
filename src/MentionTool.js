@@ -1,6 +1,10 @@
 export default class MentionTool {
   static title = "Mentions";
 
+  static get shortcut() {
+    return "CTRL+2";
+  }
+
   static get isInline() {
     return true;
   }
@@ -14,6 +18,10 @@ export default class MentionTool {
     this.selectedUser = null;
     this.range = null;
     this.block = null;
+    this.iconClasses = {
+      base: this.api.styles.inlineToolButton,
+      active: this.api.styles.inlineToolButtonActive
+    };
   }
 
   static get sanitize() {
@@ -25,16 +33,20 @@ export default class MentionTool {
   render() {
     this.button = document.createElement("button");
     this.button.type = "button";
-    this.button.textContent = "@";
-    this.button.style.border = "none";
-    this.button.style.background = "white";
-    this.button.style.cursor = "pointer";
+    this.button.innerText = "@";
+    this.button.classList.add(this.iconClasses.base);
+    this.button.style.paddingLeft = "3px";
+    this.button.style.paddingLeft = "3px";
+    this.button.style.display="flex";
+    this.button.style.justifyContent="center";
+    this.button.style.alignItems="center";
+    this.button.tabIndex = 0;
     return this.button;
   }
 
   selectUser(user) {
     this.selectedUser = user;
-
+  
     const selectedNode = this.range.extractContents();
     const element = document.createElement("span");
     element.id = this.selectedUser.id;
@@ -43,17 +55,28 @@ export default class MentionTool {
     element.style.borderRadius = "20px";
     element.style.backgroundColor = "#24A0ED";
     element.contentEditable = false;
-
+  
     selectedNode.textContent = "@" + this.selectedUser.name;
     element.appendChild(selectedNode);
-
     this.range.insertNode(element);
-    this.api.selection.expandToTag(element);
+  
+    // Create a new range just after the inserted span element
+    const newRange = document.createRange();
+    newRange.setStartAfter(element);
+    newRange.collapse(true);
+  
+    // Clear the existing selection
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+  
+    // Set the selection to the new range
+    selection.addRange(newRange);
+  
+    // Hide the actionList and close the inlineToolbar
     this.actionList.hidden = true;
     this.api.inlineToolbar.close();
-    const s = window.getSelection();
-    s.removeAllRanges();
   }
+  
 
   renderActions() {
     this.actionList = document.createElement("ul");
@@ -88,7 +111,7 @@ export default class MentionTool {
 
       listItem.appendChild(img);
       listItem.appendChild(text);
-      listItem.addEventListener("click", () => {
+      listItem.addEventListener("click", (e) => {
         this.selectUser(user);
       });
 
@@ -102,7 +125,8 @@ export default class MentionTool {
     if (this.actionList.hidden) {
       this.actionList.hidden = false;
       this.range = range;
-      this.block = this.api.blocks.getCurrentBlockIndex();
+      const blockIndex = this.api.blocks.getCurrentBlockIndex();
+      this.block = this.api.blocks.getBlockByIndex(blockIndex);
     } else {
       this.actionList.hidden = true;
     }
